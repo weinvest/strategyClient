@@ -14,6 +14,9 @@ StrategyClient::StrategyClient()
 {
 }
 
+StrategyClient::~StrategyClient()
+{}
+
 StrategyClient::Result StrategyClient::connect(std::string& host,int port)
 {
     StrategyClient::Result result;

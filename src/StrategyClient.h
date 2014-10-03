@@ -15,6 +15,7 @@ class STRATEGYCLIENTSHARED_EXPORT StrategyClient
 
 public:
     StrategyClient();
+    ~StrategyClient();
 
     typedef std::pair<bool,std::string> Result;
     Result connect(std::string& host,int port);
