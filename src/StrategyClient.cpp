@@ -66,6 +66,7 @@ StrategyClient::Result StrategyClient::getResource(ResType::type resType
         result.first = response.Status == GetStatus::Success;
         if(result.first && ResType::Mapping != response.Type)
         {
+            result.second.resize(response.Content.size());
             AESDecrypt(result.second,response.Key,response.Content,0);
         }
         else
