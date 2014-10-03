@@ -33,14 +33,18 @@ int main()
         std::string password;
         std::string tradingDay;
 
-        std::cout<<"ResType(0-mapping 1-configure 2-strategy):";
-        std::cin>>resType;
-        std::cout<<"UserName:";
-        std::cin>>userName;
-        std::cout<<"Password:";
-        std::cin>>password;
-        std::cout<<"TradingDay:";
-        std::cin>>tradingDay;
+        resType = 2;
+        userName = "g@dFM1Vs";
+        password = "q%4d1FzePiu8";
+        tradingDay = "xx";
+//        std::cout<<"ResType(0-mapping 1-configure 2-strategy):";
+//        std::cin>>resType;
+//        std::cout<<"UserName:";
+//        std::cin>>userName;
+//        std::cout<<"Password:";
+//        std::cin>>password;
+//        std::cout<<"TradingDay:";
+//        std::cin>>tradingDay;
 
         auto result = client.getResource(ResType::type(resType),userName,password,tradingDay);
         if(result.first)

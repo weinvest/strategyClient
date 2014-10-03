@@ -6,5 +6,5 @@ CONFIG -= qt
 INCLUDEPATH += .. ../../webquant
 SOURCES += main.cpp
 
-LIBS += -lstrategyClient -lnetwork -lwcrypto -lcommon -lboost_thread -lboost_system -lthrift
+LIBS += -lstrategyClient -lnetwork -lwcrypto -lcommon -lboost_thread -lboost_system -lthrift -lboost_filesystem -lboost_system
 
