@@ -1,0 +1,3 @@
+INCLUDE(CollectSrcs)
+SET(proto_SUBDIRS )
+GET_SRCS(proto_SRCLISTS proto_SUBDIRS)
