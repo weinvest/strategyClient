@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC  -std=c++0x   -shared -Wl,-soname,libproto.so -o libproto.so CMakeFiles/proto.dir/get_constants.cpp.o CMakeFiles/proto.dir/common_types.cpp.o CMakeFiles/proto.dir/common_constants.cpp.o CMakeFiles/proto.dir/get_types.cpp.o 
