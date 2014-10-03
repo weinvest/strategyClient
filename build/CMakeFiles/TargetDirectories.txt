@@ -1,0 +1,3 @@
+/home/shgli/src/ss/build/proto/CMakeFiles/proto.dir
+/home/shgli/src/ss/build/src/CMakeFiles/strategyClient.dir
+/home/shgli/src/ss/build/test/CMakeFiles/strategyClientTest.dir
