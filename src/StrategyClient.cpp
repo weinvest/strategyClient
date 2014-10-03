@@ -56,7 +56,7 @@ StrategyClient::Result StrategyClient::getResource(ResType::type resType
                                                    ,const std::string& tradingDay)
 {
     StrategyClient::Result result;
-    bool hasDone;
+    bool hasDone = false;
     WBlocker blocker;
     mConnection->OnResponse.connect_extended([this,&blocker,&result,&hasDone](const boost::signals2::connection& c
                                              ,WMessage::Ptr pMessage)
