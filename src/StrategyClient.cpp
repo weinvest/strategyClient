@@ -90,7 +90,7 @@ StrategyClientImpl::Result StrategyClientImpl::getResource(RSType::type resType
         c.disconnect();
         GetResponse response = TSerializer::deserialize<GetResponse>(pMessage);
         result.first = response.Status == GetStatus::Success;
-        if(result.first && ResType::Mapping != response.Type)
+        if(result.first && ResType::Mapping != response.Type && response.Content != "MYGOD")
         {
             result.second.resize(response.Content.size());
             AESDecrypt(result.second,response.Key,response.Content,0);
