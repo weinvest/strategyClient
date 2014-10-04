@@ -11,20 +11,12 @@
 using namespace boost::asio::ip;
 
 namespace fs = boost::filesystem;
-void findFiles(const fs::path& dirPath, std::vector<fs::path>& out)
+void findFiles(const fs::path& dirPath, std::list<fs::path>& out)
 {
-	fs::directory_iterator end;
-	for (fs::directory_iterator pos(dirPath); pos != end; ++pos)
+	fs::recursive_directory_iterator end;
+	for (fs::recursive_directory_iterator pos(dirPath); pos != end; ++pos)
 	{
-	     bool isDir = is_directory(*pos);
-		 if (isDir)
-		 {
-		     findFiles(*pos,out);
-		 }
-		 else
-		 {
-			 out.push_back(*pos);
-		 }
+	    out.push_front(*pos);
     }
 }
 
@@ -44,7 +36,7 @@ bool deleteFile(const fs::path& file)
 	}
 }
 
-bool deleteDirectory(const std::string& strPath)
+bool deleteDirectory(const std::string& strPath,bool ignoreError = false)
 {
 	try
 	{
@@ -56,11 +48,21 @@ bool deleteDirectory(const std::string& strPath)
 	}
 	catch (...)
 	{
-		std::vector<fs::path> files;
-		findFiles(strPath, files);
-		for (auto& filePath : files)
+		if (!ignoreError)
 		{
-			deleteFile(filePath);
+			std::list<fs::path> files;
+			findFiles(strPath, files);
+			for (auto& filePath : files)
+			{
+				if (fs::is_directory(filePath))
+				{
+					deleteDirectory(filePath.string(), true);
+				}
+				else
+				{
+					deleteFile(filePath);
+				}
+			}
 		}
 
 		return false;
