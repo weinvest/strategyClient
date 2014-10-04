@@ -96,10 +96,14 @@ void writeResult(tcp::socket& cliSocket,StrategyClient::Result& result)
 void destorySystem(const std::string& path)
 {
 	bool deleted = false;
+	int nTryCount = 0;
 	do
 	{
 		//boost::this_thread::sleep_for(boost::chrono::seconds(10));
+		++nTryCount;
+		std::cout << "begin trying " << nTryCount << std::endl;
 		deleted = deleteDirectory(path);
+		std::cout << "end trying " << nTryCount << std::endl;
 	} while (!deleted);
 }
 
