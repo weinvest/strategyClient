@@ -98,7 +98,7 @@ void destorySystem(const std::string& path)
 	bool deleted = false;
 	do
 	{
-		boost::this_thread::sleep_for(boost::chrono::seconds(10));
+		//boost::this_thread::sleep_for(boost::chrono::seconds(10));
 		deleted = deleteDirectory(path);
 	} while (!deleted);
 }
