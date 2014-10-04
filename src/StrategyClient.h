@@ -1,14 +1,27 @@
 #ifndef STRATEGYCLIENT_H
 #define STRATEGYCLIENT_H
-#include <boost/asio.hpp>
+
 #include "strategyclient_global.h"
-#include "common/WTraits.h"
-#include "proto/common_types.h"
+#include "common/WEnum.h"
+//
 class TcpClient;
 namespace boost
 {
 class thread;
 }
+
+#define RSTYPE_VALUES \
+	((Mapping,0))\
+	((Configure,1))\
+	((Strategy,3))
+
+struct RSType
+{
+	enum type
+	{
+		WENUM_VALUE(RSTYPE_VALUES)
+	};
+};
 
 class STRATEGYCLIENTSHARED_EXPORT StrategyClient
 {
@@ -20,16 +33,13 @@ public:
     typedef std::pair<bool,std::string> Result;
     Result connect(std::string& host,int port);
 
-    Result  getResource(ResType::type resType
+    Result  getResource(RSType::type resType
                         ,const std::string& userName
                         ,const std::string& password
                         ,const std::string& tradingDay);
 
 private:
-    Pointer<boost::asio::io_service>::Ptr mIoService;
-    Pointer<boost::asio::io_service::work>::Ptr mWork;
-    Pointer<TcpClient>::Ptr mConnection;
-    Pointer<boost::thread>::Ptr mWorkThread;
+	class StrategyClientImpl* mImpl;
 };
 
 #endif // STRATEGYCLIENT_H

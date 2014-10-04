@@ -1,3 +1,5 @@
+#include <boost/asio.hpp>
+#include "common/WTraits.h"
 #include "StrategyClient.h"
 #include "network/TcpClient.h"
 #include <boost/thread.hpp>
@@ -6,7 +8,31 @@
 #include "proto/get_types.h"
 #include "network/TSerializer.h"
 #include "crypto/Crypto.h"
-StrategyClient::StrategyClient()
+#include "proto/common_types.h"
+
+class StrategyClientImpl
+{
+
+public:
+	StrategyClientImpl();
+	~StrategyClientImpl();
+
+	typedef std::pair<bool, std::string> Result;
+	Result connect(std::string& host, int port);
+
+	Result  getResource(RSType::type resType
+		, const std::string& userName
+		, const std::string& password
+		, const std::string& tradingDay);
+
+private:
+	Pointer<boost::asio::io_service>::Ptr mIoService;
+	Pointer<boost::asio::io_service::work>::Ptr mWork;
+	Pointer<TcpClient>::Ptr mConnection;
+	Pointer<boost::thread>::Ptr mWorkThread;
+};
+
+StrategyClientImpl::StrategyClientImpl()
     :mIoService(new boost::asio::io_service())
     ,mWork(new boost::asio::io_service::work(*mIoService))
     ,mConnection(new TcpClient(*mIoService))
@@ -14,12 +40,12 @@ StrategyClient::StrategyClient()
 {
 }
 
-StrategyClient::~StrategyClient()
+StrategyClientImpl::~StrategyClientImpl()
 {}
 
-StrategyClient::Result StrategyClient::connect(std::string& host,int port)
+StrategyClientImpl::Result StrategyClientImpl::connect(std::string& host,int port)
 {
-    StrategyClient::Result result;
+    StrategyClientImpl::Result result;
     bool hasDone = false;
     WBlocker blocker;
     mConnection->OnConnected.connect_extended([&result,&blocker,&hasDone](const boost::signals2::connection& c)
@@ -50,12 +76,12 @@ StrategyClient::Result StrategyClient::connect(std::string& host,int port)
     return result;
 }
 
-StrategyClient::Result StrategyClient::getResource(ResType::type resType
+StrategyClientImpl::Result StrategyClientImpl::getResource(RSType::type resType
                                                    ,const std::string& userName
                                                    ,const std::string& password
                                                    ,const std::string& tradingDay)
 {
-    StrategyClient::Result result;
+    StrategyClientImpl::Result result;
     bool hasDone = false;
     WBlocker blocker;
     mConnection->OnResponse.connect_extended([this,&blocker,&result,&hasDone](const boost::signals2::connection& c
@@ -89,7 +115,7 @@ StrategyClient::Result StrategyClient::getResource(ResType::type resType
 
 
     GetRequest request;
-    request.Type = resType;
+    request.Type = (ResType::type)resType;
     request.TradingDay = tradingDay;
     request.UserName = userName;
     request.Password = password;
@@ -98,4 +124,27 @@ StrategyClient::Result StrategyClient::getResource(ResType::type resType
     blocker.wait([&hasDone](){return hasDone;});
 
     return result;
+}
+
+StrategyClient::StrategyClient()
+:mImpl(new StrategyClientImpl())
+{}
+
+
+StrategyClient::~StrategyClient()
+{
+	delete mImpl;
+}
+
+StrategyClient::Result StrategyClient::connect(std::string& host, int port)
+{
+	return mImpl->connect(host, port);
+}
+
+StrategyClient::Result  StrategyClient::getResource(RSType::type resType
+	, const std::string& userName
+	, const std::string& password
+	, const std::string& tradingDay)
+{
+	return mImpl->getResource(resType, userName, password, tradingDay);
 }

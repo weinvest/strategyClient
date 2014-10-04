@@ -1,2 +1,9 @@
 build
-
+x64
+Debug
+*.opensdf
+*.sdf
+*.v12.suo
+*.vcxproj.user
+*.vcxproj.filters
+ipch

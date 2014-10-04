@@ -46,7 +46,7 @@ int main()
 //        std::cout<<"TradingDay:";
 //        std::cin>>tradingDay;
 
-        auto result = client.getResource(ResType::type(resType),userName,password,tradingDay);
+        auto result = client.getResource(RSType::type(resType),userName,password,tradingDay);
         if(result.first)
         {
             std::cout<<"successed,content:"<<std::endl;
