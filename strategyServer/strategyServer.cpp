@@ -1,8 +1,7 @@
 // strategyServer.cpp : 定义控制台应用程序的入口点。
 //
 
-#include "stdafx.h"
-#include <boost\asio.hpp>
+#include <boost/asio.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 #include "../strategyClient/src/StrategyClient.h"
