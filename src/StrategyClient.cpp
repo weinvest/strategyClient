@@ -104,6 +104,7 @@ StrategyClientImpl::Result StrategyClientImpl::getResource(RSType::type resType
                 std::stringstream sContent(response.Content),oStream;
                 filtering_streambuf<input> in;
                 in.push(bzip2_decompressor());
+                in.push(sContent);
                 boost::iostreams::copy(in,oStream);
                 response.Content = oStream.str();
             }
