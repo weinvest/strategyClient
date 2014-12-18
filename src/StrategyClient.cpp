@@ -47,7 +47,9 @@ StrategyClientImpl::StrategyClientImpl()
 }
 
 StrategyClientImpl::~StrategyClientImpl()
-{}
+{
+    mConnection->close();
+}
 
 StrategyClientImpl::Result StrategyClientImpl::connect(std::string& host,int port)
 {
