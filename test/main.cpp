@@ -6,10 +6,11 @@ using namespace std;
 
 int main()
 {
-    std::string host("106.186.123.105");
+//    std::string host("106.186.123.105");
+    std::string host("127.0.0.1");
     int port = 5188;
-//    std::cout<<"Host:";
-//    std::cin >> host;
+    std::cout<<"Host:";
+    std::cin >> host;
 //    std::cout<<"Port:";
 //    std::cin>>port;
 
@@ -34,15 +35,15 @@ int main()
         std::string tradingDay;
 
         resType = 2;
-        userName = "g@dFM1Vs";
-        password = "q%4d1FzePiu8";
+        userName = "KL)mvyu8";
+        password = "KTBaei)c!0EF";
         tradingDay = "xx";
-//        std::cout<<"ResType(0-mapping 1-configure 2-strategy):";
-//        std::cin>>resType;
-//        std::cout<<"UserName:";
-//        std::cin>>userName;
-//        std::cout<<"Password:";
-//        std::cin>>password;
+        std::cout<<"ResType(0-mapping 1-configure 2-strategy):";
+        std::cin>>resType;
+        std::cout<<"UserName:";
+        std::cin>>userName;
+        std::cout<<"Password:";
+        std::cin>>password;
 //        std::cout<<"TradingDay:";
 //        std::cin>>tradingDay;
 
