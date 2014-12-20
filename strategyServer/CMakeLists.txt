@@ -1,4 +1,4 @@
-SET(TARGET strategyClientTest)
+SET(TARGET strategyServer)
 PROJECT(${TARGET})
 INCLUDE(CollectSrcs)
 

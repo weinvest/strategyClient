@@ -1,4 +1,10 @@
 #include <boost/asio.hpp>
+#include <sstream>
+#include <iostream>
+#include <stdexcept>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/bzip2.hpp>
 #include "common/WTraits.h"
 #include "StrategyClient.h"
 #include "network/TcpClient.h"
@@ -41,7 +47,8 @@ StrategyClientImpl::StrategyClientImpl()
 }
 
 StrategyClientImpl::~StrategyClientImpl()
-{}
+{
+}
 
 StrategyClientImpl::Result StrategyClientImpl::connect(std::string& host,int port)
 {
@@ -90,8 +97,18 @@ StrategyClientImpl::Result StrategyClientImpl::getResource(RSType::type resType
         c.disconnect();
         GetResponse response = TSerializer::deserialize<GetResponse>(pMessage);
         result.first = response.Status == GetStatus::Success;
-        if(result.first && ResType::Mapping != response.Type && response.Content != "MYGOD")
+        if(result.first && ResType::Mapping != response.Type)
         {
+            if(ResType::Strategy == response.Type)
+            {
+                using namespace boost::iostreams;
+                std::stringstream sContent(response.Content),oStream;
+                filtering_streambuf<input> in;
+                in.push(bzip2_decompressor());
+                in.push(sContent);
+                boost::iostreams::copy(in,oStream);
+                response.Content = oStream.str();
+            }
             result.second.resize(response.Content.size());
             AESDecrypt(result.second,response.Key,response.Content,0);
         }

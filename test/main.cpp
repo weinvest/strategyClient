@@ -8,9 +8,9 @@ int main()
 {
 //    std::string host("106.186.123.105");
     std::string host("127.0.0.1");
-    int port = 5188;
-    std::cout<<"Host:";
-    std::cin >> host;
+    int port = 5189;
+//    std::cout<<"Host:";
+//    std::cin >> host;
 //    std::cout<<"Port:";
 //    std::cin>>port;
 
@@ -27,7 +27,7 @@ int main()
     }
 
     std::string line;
-    while(std::getline(std::cin,line))
+    //while(std::getline(std::cin,line))
     {
         int resType;
         std::string userName;
@@ -35,15 +35,15 @@ int main()
         std::string tradingDay;
 
         resType = 2;
-        userName = "KL)mvyu8";
-        password = "KTBaei)c!0EF";
-        tradingDay = "xx";
+        userName = "cPyv!Hrd";
+        password = "uw2y#iTaMXOD";
+        tradingDay = "20141110";
         std::cout<<"ResType(0-mapping 1-configure 2-strategy):";
-        std::cin>>resType;
-        std::cout<<"UserName:";
-        std::cin>>userName;
-        std::cout<<"Password:";
-        std::cin>>password;
+//        std::cin>>resType;
+        //std::cout<<"UserName:";
+        //std::cin>>userName;
+        //std::cout<<"Password:";
+        //std::cin>>password;
 //        std::cout<<"TradingDay:";
 //        std::cin>>tradingDay;
 
