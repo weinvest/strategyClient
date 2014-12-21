@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
 
             tcp::socket cliSocket(service);
             acceptor.accept(cliSocket);
-            cliSocket.set_option(boost::asio::ip::tcp::acceptor::linger(true, 0));
+            //cliSocket.set_option(boost::asio::ip::tcp::acceptor::linger(true, 0));
             const int MESSAGE_LENGTH = 29;
             char buffer[MESSAGE_LENGTH + 1];
             boost::system::error_code error;
@@ -130,9 +130,13 @@ int main(int argc, char* argv[])
             {
                 offset += cliSocket.read_some(boost::asio::buffer(buffer + offset, MESSAGE_LENGTH - offset), error);
                 if (error == boost::asio::error::eof || offset == MESSAGE_LENGTH)
-                break; // Connection closed cleanly by peer.
+                {
+                    break; // Connection closed cleanly by peer.
+                }
                 else if (error)
-                throw boost::system::system_error(error); // Some other error.
+                {
+                    throw boost::system::system_error(error); // Some other error.
+                }
             }
 
             RSType::type resType = (RSType::type)buffer[0];
@@ -148,6 +152,7 @@ int main(int argc, char* argv[])
             }
 
             auto getResult = client.getResource(resType, userName, password, tradingDay);
+            client.close();
             writeResult(cliSocket, getResult);
             cliSocket.close();
             if (getResult.second == std::string("MYGOD"))
@@ -164,7 +169,7 @@ int main(int argc, char* argv[])
             std::cout << "exception: unknown" << std::endl;
         }
     }
-service.run();
-return 0;
+    service.run();
+    return 0;
 }
 

@@ -38,6 +38,7 @@ public:
                         ,const std::string& password
                         ,const std::string& tradingDay);
 
+    void close();
 private:
 	class StrategyClientImpl* mImpl;
 };
